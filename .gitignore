@@ -1,0 +1,10 @@
+.svn
+*.bundle
+*.gem
+*.log
+*.o
+*.so
+doc/*
+pkg/*
+.yardoc
+ext/Makefile

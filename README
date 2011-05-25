@@ -1,0 +1,31 @@
+SPDY daemon
+===========
+
+* Uses the original Google's Framer
+
+Installation:
+-------------
+
+1. gem install eventmachine em-http-request
+2. Optional, for daemonization: gem install daemons
+3. cd ext; ruby extconf.rb; make
+
+Running:
+--------
+- For command line parameters run "bin/spdyd -h"
+
+
+Rack:
+-----
+
+Can run as a rack server:
+
+    rack -s Spdy examples/local.ru
+
+TODO:
+-----
+
+Integrate with npn-enabled openssl which can be built using these steps:
+https://gist.github.com/944386
+
+Copyright 2010 (c) Roman Shterenzon, released under the AGPLv3 license.

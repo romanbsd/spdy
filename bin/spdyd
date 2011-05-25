@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'optparse'
+require 'eventmachine'
+
+# For running locally, without installing the gem
+base = File.expand_path(__FILE__ + '/../../')
+require base + '/ext/Spdy'
+$:.push(base + '/lib')
+require 'spdy'
+require 'spdy/server'
+
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = 'Usage: spdyd [options]'
+  opts.on('-P', '--proxy http://host:port', 'Use proxy') do |v|
+    options[:proxy] = v
+  end
+  opts.on('-d', '--daemonize', 'Become a daemon') {|v| options[:daemon] = v}
+  opts.on('-p', '--port NUM', 'Run on a specified port') {|v| options[:Port] = v}
+  opts.on('-s', '--ssl', 'Enable TLS/SSL') {|v| Spdy.ssl = v}
+  opts.on('-l', '--log-dir PATH', 'Log directory') {|v| options[:logdir] = v}
+  opts.on('-v', '--verbose', 'Verbose logging') {Spdy.logger.level = Logger::DEBUG}
+end.parse!
+
+Spdy::Server.configure do |config|
+  config.proxy = options[:proxy]
+end
+
+if options[:daemon]
+  require 'daemons'
+  $stderr.puts "Starting the spdyd in daemon mode..."
+  dir = options[:logdir] || File.expand_path(File.dirname(__FILE__)) + '/../log'
+  Daemons.daemonize(:app_name => 'spdyd', :backtrace => true, :dir_mode => :normal, :dir => dir)
+end
+
+EventMachine.run {
+  server = Spdy::Server.new(options)
+
+  stop_server = proc do
+    $stderr.puts "Shutting down server."
+    server.stop
+    EventMachine.stop if EventMachine.reactor_running?
+  end
+  trap('TERM') {stop_server.call}
+  trap('INT') {stop_server.call}
+
+  server.start
+}
+
+puts "Done."
