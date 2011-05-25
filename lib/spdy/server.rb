@@ -1,4 +1,3 @@
-require 'singleton'
 require 'eventmachine'
 require 'spdy/session'
 
