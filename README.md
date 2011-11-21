@@ -17,7 +17,7 @@ Installation:
 
 ### Manual
 
-1. gem install eventmachine em-http-request
+1. gem install em-http-request -v 0.3.0
 2. Optional, for daemonization: gem install daemons
 3. cd ext; ruby extconf.rb; make
 
