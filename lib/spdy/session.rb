@@ -114,8 +114,9 @@ class Spdy::Session < EventMachine::Connection
 
   def remove_stream(stream_id)
     logger.debug "Removing stream: #{stream_id}"
-    stream = @streams.delete(stream_id)
-    stream.cancel!
+    if stream = @streams.delete(stream_id)
+      stream.cancel!
+    end
   rescue Exception => e
     $stderr.puts "Exception: #{e.inspect} #{e.backtrace.join("\n")}"
   end
