@@ -17,11 +17,11 @@ Gem::Specification.new do |s|
   s.extensions = ["ext/extconf.rb"]
   s.extra_rdoc_files = [
     "LICENSE",
-    "README"
+    "README.md"
   ]
   s.files = [
     ".gitignore",
-    "README",
+    "README.md",
     "Rakefile",
     "bin/spdyd",
     "examples/access_log",
