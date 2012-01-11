@@ -37,11 +37,11 @@ Rack:
 
 You can also run it as a rack server:
 
-    rack -s Spdy examples/local.ru
+    rackup -s Spdy examples/local.ru
 
 or for Rails application:
 
-    rack -s Spdy config.ru
+    rackup -s Spdy config.ru
 
 
 TODO:
